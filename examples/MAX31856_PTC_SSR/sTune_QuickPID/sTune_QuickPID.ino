@@ -1,12 +1,12 @@
 /***************************************************************************
-  sTune QuickPID Example (MAX31856, PTC Heater / SSR / Software PWM)
+  EkimPid QuickPID Example (MAX31856, PTC Heater / SSR / Software PWM)
   This sketch does on-the-fly tuning and PID control. Tuning parameters are
   quickly determined and applied during temperature ramp-up to setpoint.
   View results using serial plotter.
-  Reference: https://github.com/Dlloydev/sTune/wiki/Examples_MAX31856_PTC_SSR
+  Reference: https://github.com/Dlloydev/EkimPid/wiki/Examples_MAX31856_PTC_SSR
   ***************************************************************************/
 #include <Adafruit_MAX31856.h>
-#include <sTune.h>
+#include <ekim_pid.h>
 #include <QuickPID.h>
 
 // pins
@@ -29,7 +29,7 @@ uint8_t debounce = 1;
 float Input, Output, Setpoint = 80, Kp, Ki, Kd;
 
 Adafruit_MAX31856 maxthermo = Adafruit_MAX31856(10); //SPI
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
 QuickPID myPID(&Input, &Output, &Setpoint);
 
 void setup() {
@@ -58,8 +58,8 @@ void loop() {
       tuner.plotter(Input, Output, Setpoint, 0.5f, 3); // output scale 0.5, plot every 3rd sample
       break;
 
-    case tuner.tunings: // active just once when sTune is done
-      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by sTune
+    case tuner.tunings: // active just once when EkimPid is done
+      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by EkimPid
       myPID.SetOutputLimits(0, outputSpan * 0.1);
       myPID.SetSampleTimeUs((outputSpan - 1) * 1000);
       debounce = 0; // ssr mode

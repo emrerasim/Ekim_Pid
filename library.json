@@ -1,8 +1,8 @@
 {
-  "name": "sTune",
+  "name": "ekim_pid",
   "version": "2.4.0",
   "description": "Open loop PID autotuner using a novel s-curve inflection point test method. Tuning parameters are determined in about ½Tau on a first-order system with time delay. Full 5Tau testing and multiple serial output options are provided.",
-  "keywords": "PID, autotune, autotuner, tuner, tune, stune, inflection, step",
+  "keywords": "PID, autotune, autotuner, tuner, tune, ekim_pid, inflection, step",
   "repository":
   {
     "type": "git",

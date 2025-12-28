@@ -1,11 +1,11 @@
 /***************************************************************************
-  sTune Get All Tunings Example (MAX6675, PTC Heater / SSR / Software PWM)
+  EkimPid Get All Tunings Example (MAX6675, PTC Heater / SSR / Software PWM)
   This runs a fast inflection point test to determine tuning parameters.
   Open serial printer to view test progress and results.
-  Reference: https://github.com/Dlloydev/sTune/wiki/Examples_MAX6675_PTC_SSR
+  Reference: https://github.com/Dlloydev/EkimPid/wiki/Examples_MAX6675_PTC_SSR
  ***************************************************************************/
 #include <max6675.h>
-#include <sTune.h>
+#include <ekim_pid.h>
 
 // pins
 const uint8_t inputPin = 0;
@@ -28,7 +28,7 @@ float tempLimit = 150;
 float Input, Output;
 
 MAX6675 module(sck, CS, SO); //SPI
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
 
 void setup() {
   pinMode(relayPin, OUTPUT);
@@ -47,7 +47,7 @@ void loop() {
       Input = module.readCelsius();
       break;
 
-    case tuner.tunings: // active just once when sTune is done
+    case tuner.tunings: // active just once when EkimPid is done
       Output = 0;
       tuner.SetTuningMethod(tuner.TuningMethod::DampedOsc_PID);
       tuner.printTunings();

@@ -1,13 +1,13 @@
 /***************************************************************************
-  sTune QuickPID Example (MAX6675, PTC Heater / SSR / Software PWM)
+  EkimPid QuickPID Example (MAX6675, PTC Heater / SSR / Software PWM)
   This sketch does on-the-fly tuning and PID control. Tuning parameters are
   quickly determined and applied. During the initial temperature ramp-up,
   the output is reduced just prior to the input reaching setpoint. This
   reduces overshoot. View results using serial plotter.
-  Reference: https://github.com/Dlloydev/sTune/wiki/Examples_MAX6675_PTC_SSR
+  Reference: https://github.com/Dlloydev/EkimPid/wiki/Examples_MAX6675_PTC_SSR
   ***************************************************************************/
 #include <max6675.h>
-#include <sTune.h>
+#include <ekim_pid.h>
 #include <QuickPID.h>
 
 // pins
@@ -33,7 +33,7 @@ bool startup = true;
 float Input, Output, Setpoint = 80, Kp, Ki, Kd;
 
 MAX6675 module(sck, CS, SO); //SPI
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
 QuickPID myPID(&Input, &Output, &Setpoint);
 
 void setup() {
@@ -54,8 +54,8 @@ void loop() {
       tuner.plotter(Input, Output, Setpoint, 0.5f, 3); // output scale 0.5, plot every 3rd sample
       break;
 
-    case tuner.tunings: // active just once when sTune is done
-      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by sTune
+    case tuner.tunings: // active just once when EkimPid is done
+      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by EkimPid
       myPID.SetOutputLimits(0, outputSpan * 0.1);
       myPID.SetSampleTimeUs((outputSpan - 1) * 1000);
       debounce = 0; // ssr mode

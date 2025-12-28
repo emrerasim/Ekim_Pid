@@ -2,10 +2,10 @@
   QuickPID Basic Example (MAX31856, PTC Heater / SSR / Software PWM)
   Update your user settings and tuning parameters, then run and view results
   using serial plotter.
-  Reference: https://github.com/Dlloydev/sTune/wiki/Examples_MAX31856_PTC_SSR
+  Reference: https://github.com/Dlloydev/EkimPid/wiki/Examples_MAX31856_PTC_SSR
   ***************************************************************************/
 #include <Adafruit_MAX31856.h>
-#include <sTune.h>
+#include <ekim_pid.h>
 #include <QuickPID.h>
 
 // pins
@@ -22,7 +22,7 @@ float tempLimit = 150;
 float Input, Output, Setpoint = 80, Kp = 2.00, Ki = 0.02, Kd = 0.06;
 
 Adafruit_MAX31856 maxthermo = Adafruit_MAX31856(10); //SPI
-sTune tuner = sTune(); // for softPWM and tempLimit
+EkimPid tuner = EkimPid(); // for softPWM and tempLimit
 QuickPID myPID(&Input, &Output, &Setpoint);
 
 void setup() {

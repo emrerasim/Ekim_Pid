@@ -1,6 +1,6 @@
-# sTune    [![arduino-library-badge](https://www.ardu-badge.com/badge/sTune.svg?)](https://www.ardu-badge.com/sTune) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/dlloydev/library/sTune.svg)](https://registry.platformio.org/packages/libraries/dlloydev/sTune)
+# EkimPid    [![arduino-library-badge](https://www.ardu-badge.com/badge/EkimPid.svg?)](https://www.ardu-badge.com/EkimPid) [![PlatformIO Registry](https://badges.registry.platformio.org/packages/dlloydev/library/EkimPid.svg)](https://registry.platformio.org/packages/libraries/dlloydev/EkimPid)
 
-This is an open loop PID autotuner using a novel s-curve inflection point test method. Tuning parameters are typically determined in about ½Tau on a first-order system with time delay. Full 5Tau testing and multiple serial output options are provided. See [**WiKi**](https://github.com/Dlloydev/sTune/wiki) for test results and more.
+This is an open loop PID autotuner using a novel s-curve inflection point test method. Tuning parameters are typically determined in about ½Tau on a first-order system with time delay. Full 5Tau testing and multiple serial output options are provided. See [**WiKi**](https://github.com/Dlloydev/EkimPid/wiki) for test results and more.
 
 ### Inflection Point Tuning Method
 
@@ -18,7 +18,7 @@ Accurate determination of the inflection point was given high priority for this 
 
 - First, the PID controller is placed in `manual` mode.
 
-- The tuner action is set to `directIP` or `reverseIP`, then configure sTune:
+- The tuner action is set to `directIP` or `reverseIP`, then configure EkimPid:
 
 - ```c++
   tuner.Configure(inputSpan, outputSpan, outputStart, outputStep, testTimeSec, settleTimeSec, samples);
@@ -53,7 +53,7 @@ Accurate determination of the inflection point was given high priority for this 
   pvMax = pvIp + slopeIp * kexp;  // where kexp = 4.3004 = (1 / exp(-1)) / (1 - exp(-1))
   ```
 
-- The process gain `Ku` and time constant `Tu` are determined and the selected tuning rule's constants are used to determine `Kp, Ki, Kd, Ti and Td`. Also, `controllability` and other details are provided (see comments in `sTune.cpp`).
+- The process gain `Ku` and time constant `Tu` are determined and the selected tuning rule's constants are used to determine `Kp, Ki, Kd, Ti and Td`. Also, `controllability` and other details are provided (see comments in `ekim_pid.cpp`).
 - In the user's sketch, the PID controller is set to automatic, the tuning parameters are applied the PID controller is run.
 
 ### Full 5T Test
@@ -64,10 +64,10 @@ A full test to pvMax is used when the controller action is set to `direct5T` or 
 
 ### Functions
 
-#### sTune Constructor
+#### EkimPid Constructor
 
 ```c++
-sTune(float *input, float *output, TuningRule tuningRule, Action action, SerialMode serialMode);
+EkimPid(float *input, float *output, TuningRule tuningRule, Action action, SerialMode serialMode);
 ```
 
 - `input` and `output` are pointers to the variables holding these values.
@@ -97,10 +97,10 @@ sTune(float *input, float *output, TuningRule tuningRule, Action action, SerialM
 | `printPIDTUNER` | ➩  Prints test data in csv format compatible with [pidtuner.com](https://pidtuner.com). <br />➩  Requires the controller `action` being set to `direct5T` or `reverse5T`<br />➩  Just copy the serial printer data and import (paste) into PID Tuner for further<br />      analysis, model identification, fine PID tuning and experimentation. <br />➩  Note that `Kp`, `Ti` and `Td` is also provided for PID Tuner. |
 | `printPLOTTER`  | Plots `pvAvg` data for use with Serial Plotter.              |
 
-#### Instantiate sTune
+#### Instantiate EkimPid
 
 ```c++
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
 /*                                         ZN_PID           directIP     serialOFF
                                            DampedOsc_PID    direct5T     printALL
                                            NoOvershoot_PID  reverseIP    printSUMMARY
@@ -116,7 +116,7 @@ sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printAL
 
 #### Configure
 
-This function applies the sTune test settings.
+This function applies the EkimPid test settings.
 
 ```c++
 void Configure(const float inputSpan, const float outputSpan, float outputStart, float outputStep,
@@ -152,7 +152,7 @@ void GetAutoTunings(float * kp, float * ki, float * kd);
 
 #### Controllability of the process
 
-When the test ends, sTune determines [how difficult](https://blog.opticontrols.com/wp-content/uploads/2011/06/td-versus-tau.png) the process is to control.
+When the test ends, EkimPid determines [how difficult](https://blog.opticontrols.com/wp-content/uploads/2011/06/td-versus-tau.png) the process is to control.
 
 ```c++
 float controllability = _Tu / _td + epsilon;

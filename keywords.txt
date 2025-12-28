@@ -1,12 +1,13 @@
 ##########################################
-# Syntax Coloring Map For sTune Library
+# Syntax Coloring Map For ekim_pid Library
 ##########################################
 
 ##########################################
 # Datatypes (KEYWORD1)
 ##########################################
 
-sTune	KEYWORD1
+EkimPid	KEYWORD1
+EkimPidTan	KEYWORD1
 tuner	KEYWORD1
 
 ##########################################

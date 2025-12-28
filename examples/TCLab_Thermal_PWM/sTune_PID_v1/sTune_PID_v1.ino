@@ -1,11 +1,11 @@
 /********************************************************************
-  sTune PID_v1 Example
+  EkimPid PID_v1 Example
   This sketch does on-the-fly tunning and PID Digital Output control
   of a thermal heater (TIP31C). Tunning parameters are quickly
   determined and applied during the temperature ramp-up to setpoint.
   Open the serial plotter to view the graphical results.
   *****************************************************************/
-#include <sTune.h>
+#include <ekim_pid.h>
 #include <PID_v1.h>
 
 // pins
@@ -25,9 +25,9 @@ uint8_t debounce = 1;
 
 // variables
 double input, output, setpoint = 50, kp, ki, kd; // PID_v1
-float Input, Output, Setpoint = 50, Kp, Ki, Kd; // sTune
+float Input, Output, Setpoint = 50, Kp, Ki, Kd; // EkimPid
 
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
 PID myPID(&input, &output, &setpoint, 0, 0, 0, P_ON_M, DIRECT);
 
 void setup() {
@@ -49,8 +49,8 @@ void loop() {
       tuner.plotter(Input, Output, Setpoint, 0.1f, 3); // output scale 0.1, plot every 3rd sample
       break;
 
-    case tuner.tunings: // active just once when sTune is done
-      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by sTune
+    case tuner.tunings: // active just once when EkimPid is done
+      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by EkimPid
       myPID.SetOutputLimits(0, outputSpan);
       myPID.SetSampleTime(outputSpan - 1);
       output = outputStep, kp = Kp, ki = Ki, kd = Kd;

@@ -1,11 +1,11 @@
 /*****************************************************************************
-  sTune Get All Tunings Example (MAX31856, PTC Heater / SSR / Software PWM)
+  EkimPid Get All Tunings Example (MAX31856, PTC Heater / SSR / Software PWM)
   This runs a fast inflection point test to determine tuning parameters.
   Open serial printer to view test progress and results.
-  Reference: https://github.com/Dlloydev/sTune/wiki/Examples_MAX31856_PTC_SSR
+  Reference: https://github.com/Dlloydev/EkimPid/wiki/Examples_MAX31856_PTC_SSR
   ****************************************************************************/
 #include <Adafruit_MAX31856.h>
-#include <sTune.h>
+#include <ekim_pid.h>
 
 // pins
 const uint8_t inputPin = 0;
@@ -26,7 +26,7 @@ float tempLimit = 150;
 float Input, Output;
 
 Adafruit_MAX31856 maxthermo = Adafruit_MAX31856(10);
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
 
 void setup() {
   pinMode(drdyPin, INPUT);
@@ -52,7 +52,7 @@ void loop() {
       if (!digitalRead(drdyPin)) Input = maxthermo.readThermocoupleTemperature();
       break;
 
-    case tuner.tunings: // active just once when sTune is done
+    case tuner.tunings: // active just once when EkimPid is done
       Output = 0;
       tuner.SetTuningMethod(tuner.TuningMethod::DampedOsc_PID);
       tuner.printTunings();

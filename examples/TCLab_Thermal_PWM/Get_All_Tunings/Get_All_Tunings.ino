@@ -1,7 +1,7 @@
 /****************************************************************************
-  sTune Get All Tunings Example (TCLab - Thermal Heater using digital output)
+  EkimPid Get All Tunings Example (TCLab - Thermal Heater using digital output)
  ****************************************************************************/
-#include <sTune.h>
+#include <ekim_pid.h>
 
 // pins
 const uint8_t inputPin = 0;
@@ -20,7 +20,7 @@ float tempLimit = 90;
 // variables
 float Input, Output;
 
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printALL);
 
 void setup() {
   analogReference(EXTERNAL); // 3.3V
@@ -41,7 +41,7 @@ void loop() {
       Input = analogRead(inputPin) * 0.322265625 - 50.0; // get degC (using 3.3v AREF)
       break;
 
-    case tuner.tunings: // active just once when sTune is done
+    case tuner.tunings: // active just once when EkimPid is done
       Output = 0;
       tuner.SetTuningMethod(tuner.TuningMethod::DampedOsc_PID);
       tuner.printTunings();

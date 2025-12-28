@@ -1,12 +1,12 @@
 /******************************************************************
-  sTune QuickPID Example
+  EkimPid QuickPID Example
   This sketch does on-the-fly tunning and PID Digital Output control
   of a thermal heater (TIP31C). Tunning parameters are quickly
   determined and applied during the temperature ramp-up to setpoint.
   Open the serial plotter to view the graphical results.
   *****************************************************************/
 
-#include <sTune.h>
+#include <ekim_pid.h>
 #include <QuickPID.h>
 
 // pins
@@ -26,7 +26,7 @@ float tempLimit = 75;
 // variables
 float Input, Output, Setpoint = 50, Kp, Ki, Kd;
 
-sTune tuner = sTune(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
+EkimPid tuner = EkimPid(&Input, &Output, tuner.ZN_PID, tuner.directIP, tuner.printOFF);
 QuickPID myPID(&Input, &Output, &Setpoint);
 
 void setup() {
@@ -48,8 +48,8 @@ void loop() {
       tuner.plotter(Input, Output * 0.1, Setpoint, 1, 3);
       break;
 
-    case tuner.tunings: // active just once when sTune is done
-      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by sTune
+    case tuner.tunings: // active just once when EkimPid is done
+      tuner.GetAutoTunings(&Kp, &Ki, &Kd); // sketch variables updated by EkimPid
       myPID.SetOutputLimits(0, outputSpan);
       myPID.SetSampleTimeUs(outputSpan * 1000 - 1);
       myPID.SetMode(myPID.Control::automatic); // the PID is turned on
